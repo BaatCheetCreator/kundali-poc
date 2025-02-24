@@ -102,25 +102,28 @@
   </div>
 
   <script>
-    // Mock Data for Testing
-    function generateReport() {
-      document.getElementById('results').style.display = 'block';
-      document.getElementById('charts').innerHTML = `
+  function generateReport() {
+    document.getElementById('results').style.display = 'block';
+    document.getElementById('charts').innerHTML = `
+      <div class="chart-style">
         <h3>North Indian Chart</h3>
-        <p>Sun in 10th House: Strong career potential.</p>
+        <p>🌞 Sun in 10th House: Leadership and career growth are highlighted.</p>
+        <p>🪐 Saturn in 5th House: Focus on disciplined learning.</p>
+      </div>
+      <div class="chart-style">
         <h3>South Indian Chart</h3>
-        <p>Mars in 7th House: Review relationships.</p>
-      `;
-      document.getElementById('analysis').innerHTML = `
-        <h3>Comparative Analysis</h3>
-        <p>✅ Overlap: Strong career growth in 3/4 charts.</p>
-        <p>❗ Conflict: Mars placement varies across styles.</p>
-      `;
-    }
-
-    function downloadPDF() {
-      alert("PDF download will be added in Phase 2!");
-    }
-  </script>
+        <p>♂️ Mars in 7th House: Energize relationships with patience.</p>
+        <p>♃ Jupiter in 11th House: Financial gains likely after efforts.</p>
+      </div>
+    `;
+    document.getElementById('analysis').innerHTML = `
+      <h3>Comparative Analysis</h3>
+      <div class="analysis-box">
+        <p>✅ 3/4 charts agree: Strong career growth potential.</p>
+        <p>❗ 2/4 charts flag: Mars-related conflicts need attention.</p>
+      </div>
+    `;
+  }
+</script>
 </body>
 </html>
