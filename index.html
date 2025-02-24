@@ -201,64 +201,188 @@
             <button class="generate-btn" onclick="generateReport()">Generate My Cosmic Report</button>
         </section>
 
-        <!-- Results Section -->
-        <section id="results">
-            <!-- Results content same as previous version -->
-        </section>
+        <!-- Add this to your existing code, replacing the results section and script -->
+<section id="results">
+    <h2 style="color: #6B46C1; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Your Cosmic Blueprint</h2>
+    
+    <div class="chart-container">
+        <div class="chart-style">
+            <h3>🌌 North Indian Chart Analysis</h3>
+            <div id="north-chart"></div>
+        </div>
+        
+        <div class="chart-style">
+            <h3>🌠 South Indian Chart Analysis</h3>
+            <div id="south-chart"></div>
+        </div>
     </div>
 
-    <script>
-        // Name Compliments
-        const compliments = [
-            "What a beautiful name! 🌸",
-            "That's an interesting name! ✨",
-            "Lovely name choice! 💫",
-            "Such a meaningful name! 🌟",
-            "Name with great energy! 🔮"
-        ];
+    <div class="analysis-box">
+        <h3>✨ Key Insights Across Systems</h3>
+        <div id="comparative-analysis"></div>
+    </div>
 
-        // Famous Birthdays Database
-        const famousBirthdays = {
-            '01-02': "Isaac Asimov, visionary science fiction writer",
-            '02-15': "Galileo Galilei, father of modern astronomy",
-            '03-14': "Albert Einstein, revolutionary physicist",
-            '04-23': "William Shakespeare, greatest playwright",
-            '05-12': "Florence Nightingale, founder of modern nursing",
-            '06-28': "Elon Musk, innovative entrepreneur",
-            '07-30': "Henry Ford, pioneer of mass production",
-            '08-05': "Neil Armstrong, first moonwalker",
-            '09-25': "William Faulkner, Nobel-winning author",
-            '10-31': "John Keats, romantic poet",
-            '11-07': "Marie Curie, Nobel-winning scientist",
-            '12-21': "Jane Fonda, acclaimed actress & activist"
-        };
+    <div id="qa-section" style="margin-top: 30px;">
+        <h3>🔮 Ask 3 Cosmic Questions</h3>
+        <div class="question-interface">
+            <div id="question-counter" style="color: #6B46C1; margin: 10px 0;">Questions remaining: 3</div>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="user-question" placeholder="Type your question..." 
+                       style="flex:1; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;">
+                <button onclick="handleQuestion()" 
+                        style="background: #6B46C1; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;">
+                    Ask Universe
+                </button>
+            </div>
+            <div id="answer-box" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+</section>
 
-        // Event Listeners
-        document.getElementById('name').addEventListener('input', (e) => {
-            if(e.target.value.length > 3) {
-                const compliment = document.getElementById('name-compliment');
-                compliment.textContent = compliments[Math.floor(Math.random() * compliments.length)];
-                compliment.style.opacity = '1';
-            }
-        });
+<script>
+// =====================
+// MOCK DATA GENERATORS
+// =====================
 
-        document.getElementById('dob').addEventListener('change', (e) => {
-            const date = new Date(e.target.value);
-            const monthDay = `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-            const inspiration = document.getElementById('dob-inspiration');
-            
-            if(famousBirthdays[monthDay]) {
-                inspiration.textContent = `Fun fact: ${famousBirthdays[monthDay]} shares your birthday!`;
-            } else {
-                inspiration.textContent = "Your birthday aligns with unique cosmic patterns!";
-            }
-        });
+const planetaryPositions = {
+    north: [
+        "Sun in 10th House: Leadership potential shining bright",
+        "Moon in 4th House: Strong emotional foundations",
+        "Mars in 7th House: Dynamic relationship energy"
+    ],
+    south: [
+        "Jupiter in 5th House: Creative wisdom abundant",
+        "Saturn in 12th House: Spiritual discipline needed",
+        "Venus in 2nd House: Artistic financial flow"
+    ]
+};
 
-        // Rest of the script from previous version
-        function generateReport() {
-            document.getElementById('results').style.display = 'block';
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        }
-    </script>
+const analysisInsights = [
+    { type: '✅', text: "All systems agree: Strong career potential in 2024" },
+    { type: '❗', text: "Varying Mars positions suggest relationship mindfulness" },
+    { type: '🌟', text: "Consistent Jupiter influence indicates growth opportunities" }
+];
+
+const cosmicAnswers = [
+    "The stars suggest patience will bring rewards",
+    "Mercury's position indicates clear communication needed",
+    "Saturn's influence advises strategic planning",
+    "Venus alignment suggests creative solutions"
+];
+
+// =====================
+// CORE FUNCTIONALITY
+// =====================
+
+let questionsLeft = 3;
+
+function generateReport() {
+    // Show results section
+    document.getElementById('results').style.display = 'block';
+    
+    // Generate mock chart data
+    document.getElementById('north-chart').innerHTML = planetaryPositions.north
+        .map(p => `<p>✨ ${p}</p>`).join('');
+        
+    document.getElementById('south-chart').innerHTML = planetaryPositions.south
+        .map(p => `<p>🔮 ${p}</p>`).join('');
+    
+    // Generate comparative analysis
+    document.getElementById('comparative-analysis').innerHTML = analysisInsights
+        .map(i => `<div class="insight"><span class="icon">${i.type}</span> ${i.text}</div>`)
+        .join('');
+    
+    // Reset Q&A system
+    questionsLeft = 3;
+    document.getElementById('question-counter').textContent = `Questions remaining: ${questionsLeft}`;
+    document.getElementById('answer-box').innerHTML = '';
+    document.getElementById('user-question').value = '';
+    
+    // Smooth scroll to results
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+}
+
+function handleQuestion() {
+    const questionInput = document.getElementById('user-question');
+    const answerBox = document.getElementById('answer-box');
+    
+    if (!questionInput.value.trim()) {
+        alert("Please ask your cosmic question!");
+        return;
+    }
+
+    if (questionsLeft <= 0) {
+        alert("You've reached your daily cosmic query limit!");
+        return;
+    }
+
+    // Add Q&A pair
+    answerBox.innerHTML += `
+        <div class="qa-pair">
+            <div class="question">🌠 You asked: ${questionInput.value}</div>
+            <div class="answer">✨ Cosmic Insight: ${getRandomAnswer()}</div>
+        </div>
+    `;
+
+    // Update counter
+    questionsLeft--;
+    document.getElementById('question-counter').textContent = `Questions remaining: ${questionsLeft}`;
+    questionInput.value = '';
+}
+
+function getRandomAnswer() {
+    return cosmicAnswers[Math.floor(Math.random() * cosmicAnswers.length)];
+}
+
+// =====================
+// UI ENHANCEMENTS
+// =====================
+
+// Initialize date inspiration
+document.getElementById('dob').dispatchEvent(new Event('change'));
+</script>
+
+<style>
+/* Add these styles to existing CSS */
+.chart-container {
+    display: grid;
+    gap: 30px;
+    margin: 25px 0;
+}
+
+.chart-style {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.analysis-box {
+    background: #fff9ed;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 25px 0;
+    border: 1px solid #ffeeba;
+}
+
+.qa-pair {
+    padding: 15px;
+    margin: 10px 0;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.question {
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.answer {
+    color: #4a5568;
+    margin-top: 8px;
+    padding-left: 15px;
+    border-left: 3px solid #6B46C1;
+}
+</style>
 </body>
 </html>
