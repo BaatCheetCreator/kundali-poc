@@ -229,6 +229,21 @@
           margin-bottom: 25px;
           color: #2d3748
       }
+    .payment-options {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .payment-option {
+        padding: 10px 15px;
+        border: 1px solid #6B46C1;
+        border-radius: 5px;
+        color: #6B46C1;
+        background-color: white;
+        cursor: pointer; /* Indicate clickable */
+    }
 
       .no-pressure-message {
           font-style: italic;
@@ -309,6 +324,27 @@
       .Sa { color: #2a9d8f; } /* Saturn - Teal */
       .Ra { color: #90be6d; } /* Rahu - Green */
       .Ke { color: #8e5438; } /* Ketu - Brown */
+      .location-message, .nakshatra-message {
+            text-align: center;
+            font-style: italic;
+            color: #6B46C1;
+            margin: 10px 0;
+        }
+        .map-container {
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+        .map-container img{
+            border: 1px solid;
+        }
+        .location-dropdowns {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
 
     </style>
 </head>
@@ -380,8 +416,22 @@
 
             <div class="form-group">
                 <label>Birthplace</label>
-                <input type="text" id="birthplace" placeholder="City or District" required>
-            </div>
+                <div class="location-dropdowns">
+                    <select id="country" onchange="populateDropdowns('country', 'state')">
+                        <option value="">Select Country</option>
+                    </select>
+                    <select id="state" onchange="populateDropdowns('state', 'district')">
+                        <option value="">Select State</option>
+                    </select>
+                    <select id="district" onchange="populateDropdowns('district', 'city')">
+                        <option value="">Select District</option>
+                    </select>
+                    <select id="city">
+                        <option value="">Select City</option>
+                    </select>
+                </div>
+                <input type="text" id="zipcode" placeholder="Birthplace Zip Code (Optional)*">
+           </div>
 
             <button class="generate-btn" onclick="generateReport()">Generate My Cosmic Report</button>
         </section>
@@ -389,6 +439,11 @@
         <!-- Results Section -->
         <section id="results">
             <h2 style="color: #6B46C1; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Your Cosmic Blueprint</h2>
+            <!-- Map container  -->
+            <div class="map-container">
+                <img src="https://via.placeholder.com/400x200" alt="Location Map" id = 'map-image'>
+            </div>
+            <div class="location-message" id="location-message"></div>
             <!-- Chart Container -->
             <div class="chart-container">
                 <div class="chart-style">
@@ -427,6 +482,7 @@
                     </div>
                 </div>
             </div>
+            <div class = "nakshatra-message" id="nakshatra-message"></div>
             <div class="analysis-box">
                 <h3>✨ Key Insights Across Systems</h3>
                 <div id="comparative-analysis"></div>
@@ -448,12 +504,15 @@
          <!-- Donation Section -->
         <section class="donation-section">
             <h3>💖 Support Our Work</h3>
-            <p class="donation-message">
-                If AstroPath has been helpful to you, would you consider donating a <em>Shubh</em> amount of ₹11.00? 🙏
-                Your small contribution helps us continue providing this service.
+            <p class="donation-message" id="donation-message-text">
             </p>
             <img src="https://via.placeholder.com/150" alt="Demo QR Code" class="donation-qr">
             <p class="donation-number">Demo Mobile Number: +91 98765 43210</p>
+            <div class="payment-options">
+                <button class="payment-option">UPI</button>
+                <button class="payment-option">Net Banking</button>
+                <button class="payment-option">Card</button>
+            </div>
             <p class="no-pressure-message">
                 There's no pressure to donate. Your blessings are equally important to us. Om!
             </p>
@@ -465,7 +524,7 @@
 
     <script>
     // =====================
-    // MOCK DATA GENERATORS
+    // MOCK DATA
     // =====================
 
         const planetaryPositions = {
@@ -540,6 +599,63 @@
           12: []
       };
 
+    // =========================
+    // Mock Location Data
+    // =========================
+    const locationData = {
+        "India": {
+            "Maharashtra": {
+                "Mumbai": ["Bandra", "Andheri", "Borivali"],
+                "Pune": ["Kothrud", "Shivaji Nagar", "Camp"]
+            },
+            "Uttar Pradesh": {
+                "Lucknow": ["Hazratganj", "Indira Nagar", "Gomti Nagar"],
+                "Varanasi": ["Assi Ghat", "Lanka", "Sigra"]
+            }
+        },
+        "USA": {
+            "California": {
+                "Los Angeles": ["Hollywood", "Downtown", "Santa Monica"],
+                "San Francisco": ["Golden Gate", "Financial District", "Mission"]
+            },
+            "New York": {
+                "New York City": ["Manhattan", "Brooklyn", "Queens"]
+            }
+        }
+    };
+// Mock Exchange Rates (INR to other currencies)
+    const exchangeRates = {
+        "India": 1,   // INR to INR
+        "USA": 83,  // INR to USD
+        "UK": 104,    // INR to GBP
+        "EuroZone": 89 // INR to EUR
+        // Add more countries and rates as needed
+    };
+
+    // =========================
+    // Location-Based Messages
+    // =========================
+    const locationMessages = {
+        "Varanasi": "You were born in the sacred city of Varanasi, on the banks of the holy Ganges!",
+        "Lucknow": "You were born in Lucknow, the city of Nawabs and rich cultural heritage!",
+        "Mumbai": "You were born in Mumbai, a city with rich history and diverse culture!",
+        "Pune": "You were born in the cultural capital of Maharashtra, Pune!",
+        "Los Angeles": "You were born in Los Angeles, home to Hollywood and entertainment!",
+        "San Francisco": "You were born in San Francisco, a city known for innovation and the Golden Gate Bridge!",
+        "New York City": "You were born in the vibrant and iconic New York City!"
+        // Add more locations and messages
+    };
+    // =============================
+    // Nakshatra Messages (Examples)
+    // =============================
+    const nakshatraMessages = [
+    "Albert Einstein",
+    "William Shakespeare",
+    "Marie Curie",
+    "Elon Musk"
+    // Add more famous people
+    ];
+
     // =====================
     // EVENT LISTENERS (Input form)
     // =====================
@@ -594,6 +710,12 @@
 
             // Populate Charts
             populateCharts();
+            showMap();
+
+            // Display Location-Based Message
+            displayLocationMessage();
+            displayNakshatraMessage();
+            updateDonationMessage();
 
             // Smooth scroll to results
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
@@ -632,49 +754,4 @@
         }
     // ==================
     // CHART POPULATION
-    // ==================
-        function populateCharts() {
-            const northHouses = document.querySelectorAll('.north-indian-chart .house');
-            const southHouses = document.querySelectorAll('.south-indian-chart .house');
-
-            // Populate North Indian Chart
-            for (let i = 0; i < northHouses.length; i++) {
-                const houseNumber = i + 1;
-                const planets = mockPlanetaryPositions[houseNumber];
-                if (planets) {
-                  northHouses[i].innerHTML = planets.map(p => `<span class="planet ${p}">${p}</span>`).join('');
-                }
-            }
-
-            // Populate South Indian Chart
-              for (let i = 0; i < southHouses.length; i++) {
-                const houseNumber = i+1;
-                const planets = mockPlanetaryPositions[houseNumber];
-                if (planets) {
-                    southHouses[i].innerHTML = planets.map(p => `<span class="planet ${p}">${p}</span>`).join('');
-                }
-              }
-        }
-        // =====================
-        // UI ENHANCEMENTS - Initialization
-        // =====================
-
-        // Initialize date inspiration
-        document.getElementById('dob').dispatchEvent(new Event('change'));
-
-        // Human Verification Logic
-        document.addEventListener('DOMContentLoaded', () => {
-            const verificationScreen = document.getElementById('verification-screen');
-            const humanCheck = document.getElementById('human-check');
-            const mainContent = document.querySelector('.main-content');
-
-            humanCheck.addEventListener('change', () => {
-                if (humanCheck.checked) {
-                    verificationScreen.style.display = 'none';
-                    mainContent.style.display = 'block';
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+    // =================
