@@ -11,7 +11,7 @@
             font-family: 'Open Sans', sans-serif;
             background: #f8f9fa;
             margin: 0;
-            padding: 20px;
+            padding: 0; /* Reset padding for full-screen verification */
             color: #2d3748;
         }
 
@@ -173,10 +173,89 @@
             padding-left: 15px;
             border-left: 3px solid #6B46C1;
         }
+        /* Verification Screen Styles */
+        #verification-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's on top */
+        }
+
+        .verification-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .verification-checkbox {
+            margin-right: 10px;
+        }
+        /* Donation Section Styles */
+        .donation-section {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 2px solid #e2e8f0;
+        }
+        .donation-section h3{
+            color: #6B46C1;
+            margin-bottom: 1rem;
+        }
+
+        .donation-message {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: #4a5568;
+        }
+
+        .donation-qr {
+            width: 150px; /* Adjust as needed */
+            height: 150px; /* Adjust as needed */
+            margin-bottom: 15px;
+        }
+
+        .donation-number {
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #2d3748
+        }
+
+        .no-pressure-message {
+            font-style: italic;
+            margin-bottom: 10px;
+            color: #718096;
+        }
+
+        .blessing {
+            font-size: 1.2em;
+            color: #6B46C1;
+        }
+        .main-content{
+            display: none;
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Verification Screen -->
+    <div id="verification-screen">
+        <div class="verification-content">
+            <label for="human-check" style = "display: flex; align-items: center; justify-content: center;">
+                <input type="checkbox" id="human-check" class="verification-checkbox">
+                I am a human 🙏
+            </label>
+        </div>
+    </div>
+    <!-- Main Content -->
+    <div class="container main-content">
     <div class="disclaimer">⚠️ This is a suggestive report. We would recommend that you should verify this report with an Astrology expert. This is a test version, and reports use mock data for demonstration.</div>
         <div class="header">
             <div class="logo">AstroPath 🌟</div>
@@ -269,6 +348,22 @@
                     <div id="answer-box" style="margin-top: 20px;"></div>
                 </div>
             </div>
+        </section>
+         <!-- Donation Section -->
+        <section class="donation-section">
+            <h3>💖 Support Our Work</h3>
+            <p class="donation-message">
+                If AstroPath has been helpful to you, would you consider donating a <em>Shubh</em> amount of ₹11.00? 🙏
+                Your small contribution helps us continue providing this service.
+            </p>
+            <img src="https://via.placeholder.com/150" alt="Demo QR Code" class="donation-qr">
+            <p class="donation-number">Demo Mobile Number: +91 98765 43210</p>
+            <p class="no-pressure-message">
+                There's no pressure to donate. Your blessings are equally important to us. Om!
+            </p>
+            <p class="blessing">
+                Mangal Bhavatu! ✨🙌🌟
+            </p>
         </section>
     </div>
 
@@ -428,6 +523,19 @@
         // Initialize date inspiration
         document.getElementById('dob').dispatchEvent(new Event('change'));
 
+        // Human Verification Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const verificationScreen = document.getElementById('verification-screen');
+            const humanCheck = document.getElementById('human-check');
+            const mainContent = document.querySelector('.main-content');
+
+            humanCheck.addEventListener('change', () => {
+                if (humanCheck.checked) {
+                    verificationScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                }
+            });
+        });
     </script>
 </body>
 </html>
