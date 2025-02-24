@@ -6,241 +6,309 @@
     <title>AstroPath - Personalized Kundali Analysis</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Open+Sans&display=swap" rel="stylesheet">
     <style>
-        /* Base Styles */
-        body {
-            font-family: 'Open Sans', sans-serif;
-            background: #f8f9fa;
-            margin: 0;
-            padding: 0; /* Reset padding for full-screen verification */
-            color: #2d3748;
+      /* Base Styles */
+      body {
+          font-family: 'Open Sans', sans-serif;
+          background: #f8f9fa;
+          margin: 0;
+          padding: 0; /* Reset padding for full-screen verification */
+          color: #2d3748;
+      }
+
+      .container {
+          max-width: 800px;
+          margin: 0 auto;
+          background: white;
+          border-radius: 12px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          padding: 30px;
+      }
+
+      /* Header Section */
+      .header {
+          text-align: center;
+          margin-bottom: 30px;
+      }
+
+      .logo {
+          font-family: 'Poppins', sans-serif;
+          color: #6B46C1;
+          font-size: 28px;
+          font-weight: 600;
+          margin-bottom: 10px;
+      }
+
+      .tagline {
+          color: #718096;
+          font-size: 16px;
+      }
+
+      /* Form Elements */
+      .form-group {
+          margin-bottom: 25px;
+      }
+
+      label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: 500;
+          color: #2d3748;
+      }
+
+      input, select {
+          width: 100%;
+          padding: 12px;
+          border: 2px solid #e2e8f0;
+          border-radius: 8px;
+          font-size: 16px;
+          transition: border-color 0.3s ease;
+      }
+
+      input:focus, select:focus {
+          outline: none;
+          border-color: #6B46C1;
+      }
+
+      .time-group {
+          display: flex;
+          gap: 10px;
+      }
+
+      .time-group select {
+          width: 33%;
+      }
+
+      .help-text {
+          font-size: 14px;
+          color: #718096;
+          margin-top: 8px;
+      }
+
+      /* Interactive Messages */
+      .name-compliment {
+          color: #6B46C1;
+          font-weight: 500;
+          margin-top: 5px;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+      }
+
+      .dob-inspiration {
+          font-size: 14px;
+          color: #4a5568;
+          margin-top: 8px;
+          font-style: italic;
+      }
+
+      /* Button Styles */
+      .generate-btn {
+          background: #6B46C1;
+          color: white;
+          border: none;
+          padding: 15px 30px;
+          border-radius: 8px;
+          font-size: 16px;
+          font-weight: 500;
+          cursor: pointer;
+          width: 100%;
+          transition: transform 0.2s ease;
+      }
+
+      .generate-btn:hover {
+          transform: translateY(-2px);
+      }
+
+      /* Results Section */
+      #results {
+          display: none;
+          margin-top: 30px;
+          padding-top: 30px;
+          border-top: 2px solid #e2e8f0;
+      }
+
+      .disclaimer {
+          background: #FFD70020;
+          padding: 15px;
+          border-radius: 8px;
+          margin: 20px 0;
+          text-align: center;
+          border: 1px solid #FFD700;
+      }
+        .chart-container {
+          display: grid;
+          gap: 30px;
+          margin: 25px 0;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
+
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-        }
+      .chart-style {
+          background: #f8f9fa;
+          padding: 20px;
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
+      }
 
-        /* Header Section */
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+      .analysis-box {
+          background: #fff9ed;
+          padding: 20px;
+          border-radius: 12px;
+          margin: 25px 0;
+          border: 1px solid #ffeeba;
+      }
 
-        .logo {
-            font-family: 'Poppins', sans-serif;
-            color: #6B46C1;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
+      .qa-pair {
+          padding: 15px;
+          margin: 10px 0;
+          background: #f8f9fa;
+          border-radius: 8px;
+      }
 
-        .tagline {
-            color: #718096;
-            font-size: 16px;
-        }
+      .question {
+          color: #2d3748;
+          font-weight: 500;
+      }
 
-        /* Form Elements */
-        .form-group {
-            margin-bottom: 25px;
-        }
+      .answer {
+          color: #4a5568;
+          margin-top: 8px;
+          padding-left: 15px;
+          border-left: 3px solid #6B46C1;
+      }
+      /* Verification Screen Styles */
+      #verification-screen {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000; /* Ensure it's on top */
+      }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #2d3748;
-        }
+      .verification-content {
+          background: white;
+          padding: 30px;
+          border-radius: 12px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          text-align: center;
+      }
 
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
-        }
+      .verification-checkbox {
+          margin-right: 10px;
+      }
+      /* Donation Section Styles */
+      .donation-section {
+          text-align: center;
+          margin-top: 30px;
+          padding: 20px;
+          border-top: 2px solid #e2e8f0;
+      }
+      .donation-section h3{
+          color: #6B46C1;
+          margin-bottom: 1rem;
+      }
 
-        input:focus, select:focus {
-            outline: none;
-            border-color: #6B46C1;
-        }
+      .donation-message {
+          margin-bottom: 20px;
+          font-size: 1.1em;
+          color: #4a5568;
+      }
 
-        .time-group {
-            display: flex;
-            gap: 10px;
-        }
+      .donation-qr {
+          width: 150px; /* Adjust as needed */
+          height: 150px; /* Adjust as needed */
+          margin-bottom: 15px;
+      }
 
-        .time-group select {
-            width: 33%;
-        }
+      .donation-number {
+          font-weight: bold;
+          margin-bottom: 25px;
+          color: #2d3748
+      }
 
-        .help-text {
-            font-size: 14px;
-            color: #718096;
-            margin-top: 8px;
-        }
+      .no-pressure-message {
+          font-style: italic;
+          margin-bottom: 10px;
+          color: #718096;
+      }
 
-        /* Interactive Messages */
-        .name-compliment {
-            color: #6B46C1;
-            font-weight: 500;
-            margin-top: 5px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+      .blessing {
+          font-size: 1.2em;
+          color: #6B46C1;
+      }
+      .main-content{
+          display: none;
+      }
+      /* North Indian Chart Styles */
+      .north-indian-chart {
+          width: 200px;
+          height: 200px;
+          position: relative;
+          margin: 20px auto; /* Center the chart */
 
-        .dob-inspiration {
-            font-size: 14px;
-            color: #4a5568;
-            margin-top: 8px;
-            font-style: italic;
-        }
+      }
+      .north-indian-chart .house {
+          position: absolute;
+          width: 50px;
+          height: 50px;
+          border: 1px solid #ddd;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 12px;
+          background-color: #f9f9f9;
+      }
 
-        /* Button Styles */
-        .generate-btn {
-            background: #6B46C1;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            width: 100%;
-            transition: transform 0.2s ease;
-        }
+      /* House positions - Manually positioned for diamond shape */
+        .north-indian-chart .house:nth-child(1)  { top: 0;    left: 75px; } /* 1 */
+        .north-indian-chart .house:nth-child(2)  { top: 50px;  left: 125px;} /* 2 */
+        .north-indian-chart .house:nth-child(3)  { top: 100px; left: 125px;} /* 3 */
+        .north-indian-chart .house:nth-child(4)  { top: 150px; left: 75px; } /* 4 */
+        .north-indian-chart .house:nth-child(5)  { top: 100px; left: 25px; } /* 5 */
+        .north-indian-chart .house:nth-child(6)  { top: 50px;  left: 25px; } /* 6 */
+        .north-indian-chart .house:nth-child(7)  { top: 0px; left: 75px; transform: rotate(180deg);}  /* 7 */
+        .north-indian-chart .house:nth-child(8)  { top: 50px; left: 125px; transform: rotate(180deg);}  /* 8 */
+        .north-indian-chart .house:nth-child(9)  { top: 100px; left: 125px; transform: rotate(180deg);}  /* 9 */
+        .north-indian-chart .house:nth-child(10) { top: 150px; left: 75px; transform: rotate(180deg);}  /* 10 */
+        .north-indian-chart .house:nth-child(11) { top: 100px; left: 25px; transform: rotate(180deg);} /* 11 */
+        .north-indian-chart .house:nth-child(12) { top: 50px;  left: 25px; transform: rotate(180deg);} /* 12 */
 
-        .generate-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        /* Results Section */
-        #results {
-            display: none;
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 2px solid #e2e8f0;
-        }
-
-        .disclaimer {
-            background: #FFD70020;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            text-align: center;
-            border: 1px solid #FFD700;
-        }
-         .chart-container {
+      /* South Indian Chart Styles */
+      .south-indian-chart {
             display: grid;
-            gap: 30px;
-            margin: 25px 0;
+            grid-template-columns: repeat(4, 50px);
+            grid-template-rows: repeat(3, 50px);
+            gap: 2px;
+            width: 204px; /* 4 * 50px + gaps */
+            margin: 20px auto; /* Center */
         }
-
-        .chart-style {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .analysis-box {
-            background: #fff9ed;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 25px 0;
-            border: 1px solid #ffeeba;
-        }
-
-        .qa-pair {
-            padding: 15px;
-            margin: 10px 0;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-
-        .question {
-            color: #2d3748;
-            font-weight: 500;
-        }
-
-        .answer {
-            color: #4a5568;
-            margin-top: 8px;
-            padding-left: 15px;
-            border-left: 3px solid #6B46C1;
-        }
-        /* Verification Screen Styles */
-        #verification-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
+        .south-indian-chart .house {
+            border: 1px solid #ddd;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000; /* Ensure it's on top */
+            font-size: 12px;
+            background-color: #f9f9f9;
         }
-
-        .verification-content {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
-        .verification-checkbox {
-            margin-right: 10px;
-        }
-        /* Donation Section Styles */
-        .donation-section {
-            text-align: center;
-            margin-top: 30px;
-            padding: 20px;
-            border-top: 2px solid #e2e8f0;
-        }
-        .donation-section h3{
-            color: #6B46C1;
-            margin-bottom: 1rem;
-        }
-
-        .donation-message {
-            margin-bottom: 20px;
-            font-size: 1.1em;
-            color: #4a5568;
-        }
-
-        .donation-qr {
-            width: 150px; /* Adjust as needed */
-            height: 150px; /* Adjust as needed */
-            margin-bottom: 15px;
-        }
-
-        .donation-number {
-            font-weight: bold;
-            margin-bottom: 25px;
-            color: #2d3748
-        }
-
-        .no-pressure-message {
-            font-style: italic;
-            margin-bottom: 10px;
-            color: #718096;
-        }
-
-        .blessing {
-            font-size: 1.2em;
-            color: #6B46C1;
-        }
-        .main-content{
-            display: none;
-        }
+      /* Planet Styles */
+      .planet {
+          font-weight: bold;
+          margin: 2px;
+          display: inline-block; /* Important for spacing */
+      }
+      .Su { color: #e63946; } /* Sun - Red */
+      .Mo { color: #606c38; } /* Moon - Dark Green */
+      .Ma { color: #f4a261; } /* Mars - Orange */
+      .Me { color: #264653; } /* Mercury - Dark Teal */
+      .Ju { color: #e9c46a; } /* Jupiter - Yellow */
+      .Ve { color: #f4a261; } /* Venus - Light Orange */
+      .Sa { color: #2a9d8f; } /* Saturn - Teal */
+      .Ra { color: #90be6d; } /* Rahu - Green */
+      .Ke { color: #8e5438; } /* Ketu - Brown */
 
     </style>
 </head>
@@ -321,14 +389,42 @@
         <!-- Results Section -->
         <section id="results">
             <h2 style="color: #6B46C1; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Your Cosmic Blueprint</h2>
+            <!-- Chart Container -->
             <div class="chart-container">
                 <div class="chart-style">
-                    <h3>🌌 North Indian Chart Analysis</h3>
-                    <div id="north-chart"></div>
+                    <h3>🌌 North Indian Chart</h3>
+                    <div class="north-indian-chart">
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                    </div>
                 </div>
+
                 <div class="chart-style">
-                    <h3>🌠 South Indian Chart Analysis</h3>
-                    <div id="south-chart"></div>
+                    <h3>🌠 South Indian Chart</h3>
+                    <div class="south-indian-chart">
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                        <div class="house"></div>
+                    </div>
                 </div>
             </div>
             <div class="analysis-box">
@@ -426,7 +522,23 @@
             '11-07': "Marie Curie, Nobel-winning scientist",
             '12-21': "Jane Fonda, acclaimed actress & activist"
         };
-
+    // =========================
+    // Mock Planetary Positions for Charts
+    // =========================
+      const mockPlanetaryPositions = {
+          1: ['Su', 'Mo'],
+          2: ['Ma'],
+          3: [],
+          4: ['Me', 'Ve'],
+          5: ['Ju'],
+          6: [],
+          7: ['Sa'],
+          8: [],
+          9: ['Ra'],
+          10: [],
+          11: ['Ke'],
+          12: []
+      };
 
     // =====================
     // EVENT LISTENERS (Input form)
@@ -463,11 +575,11 @@
             document.getElementById('results').style.display = 'block';
 
             // Generate mock chart data
-            document.getElementById('north-chart').innerHTML = planetaryPositions.north
-                .map(p => `<p>✨ ${p}</p>`).join('');
+            // document.getElementById('north-chart').innerHTML = planetaryPositions.north
+            //     .map(p => `<p>✨ ${p}</p>`).join('');
 
-            document.getElementById('south-chart').innerHTML = planetaryPositions.south
-                .map(p => `<p>🔮 ${p}</p>`).join('');
+            // document.getElementById('south-chart').innerHTML = planetaryPositions.south
+            //     .map(p => `<p>🔮 ${p}</p>`).join('');
 
             // Generate comparative analysis
             document.getElementById('comparative-analysis').innerHTML = analysisInsights
@@ -479,6 +591,9 @@
             document.getElementById('question-counter').textContent = `Questions remaining: ${questionsLeft}`;
             document.getElementById('answer-box').innerHTML = '';
             document.getElementById('user-question').value = '';
+
+            // Populate Charts
+            populateCharts();
 
             // Smooth scroll to results
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
@@ -515,7 +630,31 @@
         function getRandomAnswer() {
             return cosmicAnswers[Math.floor(Math.random() * cosmicAnswers.length)];
         }
+    // ==================
+    // CHART POPULATION
+    // ==================
+        function populateCharts() {
+            const northHouses = document.querySelectorAll('.north-indian-chart .house');
+            const southHouses = document.querySelectorAll('.south-indian-chart .house');
 
+            // Populate North Indian Chart
+            for (let i = 0; i < northHouses.length; i++) {
+                const houseNumber = i + 1;
+                const planets = mockPlanetaryPositions[houseNumber];
+                if (planets) {
+                  northHouses[i].innerHTML = planets.map(p => `<span class="planet ${p}">${p}</span>`).join('');
+                }
+            }
+
+            // Populate South Indian Chart
+              for (let i = 0; i < southHouses.length; i++) {
+                const houseNumber = i+1;
+                const planets = mockPlanetaryPositions[houseNumber];
+                if (planets) {
+                    southHouses[i].innerHTML = planets.map(p => `<span class="planet ${p}">${p}</span>`).join('');
+                }
+              }
+        }
         // =====================
         // UI ENHANCEMENTS - Initialization
         // =====================
