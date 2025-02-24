@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AstroPath - Free Kundali Analysis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    /* Base Styles */
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #F7FAFC;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    /* Header */
+    header {
+      text-align: center;
+      padding: 20px 0;
+    }
+    .logo {
+      font-family: 'Poppins', sans-serif;
+      color: #6B46C1;
+      font-size: 24px;
+    }
+    /* Input Form */
+    #input-form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button {
+      background: #6B46C1;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+    /* Results Section (Hidden Initially) */
+    #results {
+      display: none;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">AstroPath 🪐</div>
+      <p>Your Free Multi-Style Kundali Analysis</p>
+    </header>
+
+    <!-- Input Form -->
+    <section id="input-form">
+      <div class="form-group">
+        <label>Name:</label>
+        <input type="text" id="name" required>
+      </div>
+      <div class="form-group">
+        <label>Date of Birth:</label>
+        <input type="date" id="dob" required>
+      </div>
+      <div class="form-group">
+        <label>Birth Time (Optional):</label>
+        <input type="time" id="time">
+      </div>
+      <div class="form-group">
+        <label>Birthplace (City/District):</label>
+        <input type="text" id="birthplace" required>
+      </div>
+      <button onclick="generateReport()">Generate Free Report</button>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results">
+      <h2>Your Kundali Report</h2>
+      <div id="charts"></div>
+      <div id="analysis"></div>
+      <button onclick="downloadPDF()">Download PDF</button>
+    </section>
+  </div>
+
+  <script>
+    // Mock Data for Testing
+    function generateReport() {
+      document.getElementById('results').style.display = 'block';
+      document.getElementById('charts').innerHTML = `
+        <h3>North Indian Chart</h3>
+        <p>Sun in 10th House: Strong career potential.</p>
+        <h3>South Indian Chart</h3>
+        <p>Mars in 7th House: Review relationships.</p>
+      `;
+      document.getElementById('analysis').innerHTML = `
+        <h3>Comparative Analysis</h3>
+        <p>✅ Overlap: Strong career growth in 3/4 charts.</p>
+        <p>❗ Conflict: Mars placement varies across styles.</p>
+      `;
+    }
+
+    function downloadPDF() {
+      alert("PDF download will be added in Phase 2!");
+    }
+  </script>
+</body>
+</html>
