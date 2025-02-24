@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AstroPath - Vedic Kundali Analysis</title>
+    <title>AstroPath - Personalized Kundali Analysis</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Open+Sans&display=swap" rel="stylesheet">
     <style>
         /* Base Styles */
@@ -24,17 +24,6 @@
             padding: 30px;
         }
 
-        /* Disclaimer Banner */
-        .disclaimer-banner {
-            background: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            border: 1px solid #ffeeba;
-            text-align: center;
-        }
-
         /* Header Section */
         .header {
             text-align: center;
@@ -47,6 +36,11 @@
             font-size: 28px;
             font-weight: 600;
             margin-bottom: 10px;
+        }
+
+        .tagline {
+            color: #718096;
+            font-size: 16px;
         }
 
         /* Form Elements */
@@ -70,6 +64,60 @@
             transition: border-color 0.3s ease;
         }
 
+        input:focus, select:focus {
+            outline: none;
+            border-color: #6B46C1;
+        }
+
+        .time-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .time-group select {
+            width: 33%;
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #718096;
+            margin-top: 8px;
+        }
+
+        /* Interactive Messages */
+        .name-compliment {
+            color: #6B46C1;
+            font-weight: 500;
+            margin-top: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .dob-inspiration {
+            font-size: 14px;
+            color: #4a5568;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* Button Styles */
+        .generate-btn {
+            background: #6B46C1;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s ease;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+        }
+
         /* Results Section */
         #results {
             display: none;
@@ -78,7 +126,15 @@
             border-top: 2px solid #e2e8f0;
         }
 
-        .chart-container {
+        .disclaimer {
+            background: #FFD70020;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid #FFD700;
+        }
+         .chart-container {
             display: grid;
             gap: 30px;
             margin: 25px 0;
@@ -91,89 +147,287 @@
             border: 1px solid #e2e8f0;
         }
 
-        /* Q&A Section */
+        .analysis-box {
+            background: #fff9ed;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border: 1px solid #ffeeba;
+        }
+
         .qa-pair {
             padding: 15px;
             margin: 10px 0;
             background: #f8f9fa;
             border-radius: 8px;
         }
+
+        .question {
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+        .answer {
+            color: #4a5568;
+            margin-top: 8px;
+            padding-left: 15px;
+            border-left: 3px solid #6B46C1;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="disclaimer-banner">
-            ⚠️ This is a suggestive report based on Vedic astrology principles. 
-            We strongly recommend verifying insights with a certified astrology expert 
-            before making important life decisions.
-        </div>
-
+    <div class="disclaimer">⚠️ This is a suggestive report. We would recommend that you should verify this report with an Astrology expert. This is a test version, and reports use mock data for demonstration.</div>
         <div class="header">
-            <div class="logo">AstroPath 🔭</div>
-            <p class="tagline">Your Personal Vedic Astrology Companion</p>
+            <div class="logo">AstroPath 🌟</div>
+            <p class="tagline">Discover Your Cosmic Blueprint</p>
         </div>
 
         <!-- Input Form -->
         <section id="input-form">
-            <!-- Keep existing form elements -->
+            <div class="form-group">
+                <label>Your Beautiful Name</label>
+                <input type="text" id="name" required>
+                <div class="name-compliment" id="name-compliment"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Date of Birth</label>
+                <input type="date" id="dob" required>
+                <div class="dob-inspiration" id="dob-inspiration"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Birth Time (12-hour format)</label>
+                <div class="time-group">
+                    <select id="hour">
+                        <option value="">HH</option>
+                        <option value="01">1</option>
+                        <option value="02">2</option>
+                        <option value="03">3</option>
+                        <option value="04">4</option>
+                        <option value="05">5</option>
+                        <option value="06">6</option>
+                        <option value="07">7</option>
+                        <option value="08">8</option>
+                        <option value="09">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    <select id="minute">
+                        <option value="">MM</option>
+                        <option value="00">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                    </select>
+                    <select id="ampm">
+                        <option value="">AM/PM</option>
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+                </div>
+                <div class="help-text">⏳ Important for accuracy, but we can proceed with approximate time if needed. You can also try a tentative time.</div>
+            </div>
+
+            <div class="form-group">
+                <label>Birthplace</label>
+                <input type="text" id="birthplace" placeholder="City or District" required>
+            </div>
+
+            <button class="generate-btn" onclick="generateReport()">Generate My Cosmic Report</button>
         </section>
 
         <!-- Results Section -->
         <section id="results">
-            <h2 style="color: #6B46C1;">Your Vedic Analysis Report</h2>
-            
+            <h2 style="color: #6B46C1; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Your Cosmic Blueprint</h2>
             <div class="chart-container">
-                <div class="chart-style" id="north-chart"></div>
-                <div class="chart-style" id="south-chart"></div>
+                <div class="chart-style">
+                    <h3>🌌 North Indian Chart Analysis</h3>
+                    <div id="north-chart"></div>
+                </div>
+                <div class="chart-style">
+                    <h3>🌠 South Indian Chart Analysis</h3>
+                    <div id="south-chart"></div>
+                </div>
             </div>
-
-            <div class="expert-cta" style="margin: 30px 0; text-align: center;">
-                <h3>Want Personalized Guidance?</h3>
-                <p>Connect with our certified Vedic astrologers for deeper insights</p>
-                <button style="background: #6B46C1; color: white; padding: 12px 24px; border: none; border-radius: 8px;">
-                    Book Expert Consultation
-                </button>
+            <div class="analysis-box">
+                <h3>✨ Key Insights Across Systems</h3>
+                <div id="comparative-analysis"></div>
+            </div>
+            <div id="qa-section" style="margin-top: 30px;">
+                <h3>🔮 Ask 3 Cosmic Questions</h3>
+                <div class="question-interface">
+                    <div id="question-counter" style="color: #6B46C1; margin: 10px 0;">Questions remaining: 3</div>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="user-question" placeholder="Type your question..." style="flex:1; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;">
+                        <button onclick="handleQuestion()" style="background: #6B46C1; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;">
+                            Ask Universe
+                        </button>
+                    </div>
+                    <div id="answer-box" style="margin-top: 20px;"></div>
+                </div>
             </div>
         </section>
     </div>
 
     <script>
-        // Mock Data
-        const planetaryData = {
+    // =====================
+    // MOCK DATA GENERATORS
+    // =====================
+
+        const planetaryPositions = {
             north: [
-                "🌞 Sun in 10th House: Leadership potential",
-                "🌙 Moon in 4th House: Emotional stability",
-                "♂️ Mars in 7th House: Dynamic relationships"
+                "Sun in 10th House: Leadership potential shining bright",
+                "Moon in 4th House: Strong emotional foundations",
+                "Mars in 7th House: Dynamic relationship energy"
             ],
             south: [
-                "♃ Jupiter in 5th House: Creative wisdom",
-                "🪐 Saturn in 12th House: Spiritual growth",
-                "♀️ Venus in 2nd House: Financial harmony"
+                "Jupiter in 5th House: Creative wisdom abundant",
+                "Saturn in 12th House: Spiritual discipline needed",
+                "Venus in 2nd House: Artistic financial flow"
             ]
         };
 
+        const analysisInsights = [
+            { type: '✅', text: "All systems agree: Strong career potential in 2024" },
+            { type: '❗', text: "Varying Mars positions suggest relationship mindfulness" },
+            { type: '🌟', text: "Consistent Jupiter influence indicates growth opportunities" }
+        ];
+
+        const cosmicAnswers = [
+            "The stars suggest patience will bring rewards",
+            "Mercury's position indicates clear communication needed",
+            "Saturn's influence advises strategic planning",
+            "Venus alignment suggests creative solutions"
+        ];
+
+     // =====================
+    // Name Compliments
+    // =====================
+        const compliments = [
+            "What a beautiful name! 🌸",
+            "That's an interesting name! ✨",
+            "Lovely name choice! 💫",
+            "Such a meaningful name! 🌟",
+            "Name with great energy! 🔮"
+        ];
+
+    // =========================
+    // Famous Birthdays Database
+    // =========================
+        const famousBirthdays = {
+            '01-02': "Isaac Asimov, visionary science fiction writer",
+            '02-15': "Galileo Galilei, father of modern astronomy",
+            '03-14': "Albert Einstein, revolutionary physicist",
+            '04-23': "William Shakespeare, greatest playwright",
+            '05-12': "Florence Nightingale, founder of modern nursing",
+            '06-28': "Elon Musk, innovative entrepreneur",
+            '07-30': "Henry Ford, pioneer of mass production",
+            '08-05': "Neil Armstrong, first moonwalker",
+            '09-25': "William Faulkner, Nobel-winning author",
+            '10-31': "John Keats, romantic poet",
+            '11-07': "Marie Curie, Nobel-winning scientist",
+            '12-21': "Jane Fonda, acclaimed actress & activist"
+        };
+
+
+    // =====================
+    // EVENT LISTENERS (Input form)
+    // =====================
+
+        document.getElementById('name').addEventListener('input', (e) => {
+            if(e.target.value.length > 3) {
+                const compliment = document.getElementById('name-compliment');
+                compliment.textContent = compliments[Math.floor(Math.random() * compliments.length)];
+                compliment.style.opacity = '1';
+            }
+        });
+
+        document.getElementById('dob').addEventListener('change', (e) => {
+            const date = new Date(e.target.value);
+            const monthDay = `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            const inspiration = document.getElementById('dob-inspiration');
+
+            if(famousBirthdays[monthDay]) {
+                inspiration.textContent = `Fun fact: ${famousBirthdays[monthDay]} shares your birthday!`;
+            } else {
+                inspiration.textContent = "Your birthday aligns with unique cosmic patterns!";
+            }
+        });
+
+        // =====================
+        // CORE FUNCTIONALITY
+        // =====================
+
+        let questionsLeft = 3;
+
         function generateReport() {
             // Show results section
-            const results = document.getElementById('results');
-            results.style.display = 'block';
+            document.getElementById('results').style.display = 'block';
 
-            // Populate charts
-            document.getElementById('north-chart').innerHTML = `
-                <h3>North Indian Chart Analysis</h3>
-                ${planetaryData.north.map(item => `<p>${item}</p>`).join('')}
-            `;
+            // Generate mock chart data
+            document.getElementById('north-chart').innerHTML = planetaryPositions.north
+                .map(p => `<p>✨ ${p}</p>`).join('');
 
-            document.getElementById('south-chart').innerHTML = `
-                <h3>South Indian Chart Analysis</h3>
-                ${planetaryData.south.map(item => `<p>${item}</p>`).join('')}
-            `;
+            document.getElementById('south-chart').innerHTML = planetaryPositions.south
+                .map(p => `<p>🔮 ${p}</p>`).join('');
+
+            // Generate comparative analysis
+            document.getElementById('comparative-analysis').innerHTML = analysisInsights
+                .map(i => `<div class="insight"><span class="icon">${i.type}</span> ${i.text}</div>`)
+                .join('');
+
+            // Reset Q&A system
+            questionsLeft = 3;
+            document.getElementById('question-counter').textContent = `Questions remaining: ${questionsLeft}`;
+            document.getElementById('answer-box').innerHTML = '';
+            document.getElementById('user-question').value = '';
 
             // Smooth scroll to results
-            window.scrollTo({
-                top: results.offsetTop - 50,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
+
+        function handleQuestion() {
+            const questionInput = document.getElementById('user-question');
+            const answerBox = document.getElementById('answer-box');
+
+            if (!questionInput.value.trim()) {
+                alert("Please ask your cosmic question!");
+                return;
+            }
+
+            if (questionsLeft <= 0) {
+                alert("You've reached your daily cosmic query limit!");
+                return;
+            }
+
+            // Add Q&A pair
+            answerBox.innerHTML += `
+                <div class="qa-pair">
+                    <div class="question">🌠 You asked: ${questionInput.value}</div>
+                    <div class="answer">✨ Cosmic Insight: ${getRandomAnswer()}</div>
+                </div>
+            `;
+
+            // Update counter
+            questionsLeft--;
+            document.getElementById('question-counter').textContent = `Questions remaining: ${questionsLeft}`;
+            questionInput.value = '';
+        }
+
+        function getRandomAnswer() {
+            return cosmicAnswers[Math.floor(Math.random() * cosmicAnswers.length)];
+        }
+
+        // =====================
+        // UI ENHANCEMENTS - Initialization
+        // =====================
+
+        // Initialize date inspiration
+        document.getElementById('dob').dispatchEvent(new Event('change'));
+
     </script>
 </body>
 </html>
