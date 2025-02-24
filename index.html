@@ -754,4 +754,155 @@
         }
     // ==================
     // CHART POPULATION
-    // =================
+    // ==================
+        function populateCharts() {
+            const northHouses = document.querySelectorAll('.north-indian-chart .house');
+            const southHouses = document.querySelectorAll('.south-indian-chart .house');
+
+            // Populate North Indian Chart
+            for (let i = 0; i < northHouses.length; i++) {
+                const houseNumber = i + 1;
+                const planets = mockPlanetaryPositions[houseNumber];
+                if (planets) {
+                  northHouses[i].innerHTML = planets.map(p => `<span class="planet ${p}">${p}</span>`).join('');
+                }
+            }
+
+            // Populate South Indian Chart
+              for (let i = 0; i < southHouses.length; i++) {
+                const houseNumber = i+1;
+                const planets = mockPlanetaryPositions[houseNumber];
+                if (planets) {
+                    southHouses[i].innerHTML = planets.map(p => `<span class="planet ${p}">${p}</span>`).join('');
+                }
+              }
+        }
+    // ========================
+    // LOCATION DROPDOWN LOGIC
+    // ========================
+
+        function populateDropdowns(parentSelectId, childSelectId) {
+            const parentSelect = document.getElementById(parentSelectId);
+            const childSelect = document.getElementById(childSelectId);
+            const selectedValue = parentSelect.value;
+
+            // Clear existing options
+            childSelect.innerHTML = `<option value="">Select ${childSelectId.charAt(0).toUpperCase() + childSelectId.slice(1)}</option>`;
+
+            if (selectedValue) {
+                const options = locationData[selectedValue] || locationData[parentSelect.options[parentSelect.selectedIndex].text] ;
+                if(childSelectId === 'state' || childSelectId === 'district'){
+                    for (const key in options) {
+                        const option = document.createElement('option');
+                        option.value = key;
+                        option.text = key;
+                        childSelect.add(option);
+                }
+                }else{
+                    if(options){
+                        options.forEach(city =>{
+                            const option = document.createElement('option');
+                            option.value = city;
+                            option.text = city;
+                            childSelect.add(option);
+                        })
+                    }
+                }
+            }
+        }
+
+    // =====================
+    // INITIAL DROPDOWN POPULATION
+    // =====================
+        function initialPopulate() {
+          const countrySelect = document.getElementById('country');
+            countrySelect.innerHTML = `<option value="">Select Country</option>`;
+          for (const country in locationData) {
+                const option = document.createElement('option');
+                option.value = country;
+                option.text = country;
+                countrySelect.add(option);
+            }
+        }
+
+    // ========================
+    // SHOW MAP (Placeholder)
+    // ========================
+
+        function showMap(){
+            document.getElementById('map-image').src = "https://via.placeholder.com/400x200";
+            document.querySelector('.map-container').style.display = 'block';
+
+        }
+    // ===============================
+    // DISPLAY LOCATION-BASED MESSAGE
+    // ===============================
+
+        function displayLocationMessage() {
+            const citySelect = document.getElementById('city');
+            const selectedCity = citySelect.value;
+            const message = locationMessages[selectedCity] || "Your birthplace holds a unique cosmic significance!";
+            document.getElementById('location-message').textContent = message;
+        }
+   // ============================
+    // DISPLAY NAKSHATRA MESSAGE
+    // ============================
+        function displayNakshatraMessage() {
+           const message = `You were born in the Nakshatra of ${nakshatraMessages[Math.floor(Math.random()*nakshatraMessages.length)]}!`;
+            document.getElementById('nakshatra-message').textContent = message;
+        }
+    // =============================
+    // CALCULATE DONATION AMOUNT
+    // =============================
+    function calculateDonationAmount(country) {
+        const exchangeRate = exchangeRates[country] || 1; // Default to INR
+        const amountInINR = 11;
+        let amountInLocalCurrency = amountInINR / exchangeRate;
+        amountInLocalCurrency = Math.max(amountInLocalCurrency, 1); // Ensure at least 1 unit
+
+        // Formatting
+        let currencyCode = "INR"; // Default
+        if (country === "USA") currencyCode = "USD";
+        if (country === "UK") currencyCode = "GBP";
+        if (country === 'EuroZone') currencyCode = "EUR"
+
+
+        return `${amountInLocalCurrency.toFixed(2)} ${currencyCode}`;
+    }
+
+    // ==============================
+    // UPDATE DONATION MESSAGE TEXT
+    // ==============================
+    function updateDonationMessage() {
+        const countrySelect = document.getElementById('country');
+        const selectedCountry = countrySelect.options[countrySelect.selectedIndex].text;
+        const donationAmount = calculateDonationAmount(selectedCountry);
+
+        const message = `If AstroPath has been helpful, would you consider donating a <em>Shubh</em> amount of ${donationAmount} or ₹11.00 (whichever is higher)? 🙏 Your contribution helps us!`;
+        document.getElementById('donation-message-text').innerHTML = message; // Use innerHTML to handle <em>
+    }
+
+    // =====================
+    // UI ENHANCEMENTS - Initialization
+    // =====================
+
+        // Initialize date inspiration
+        document.getElementById('dob').dispatchEvent(new Event('change'));
+         // Initial population of country dropdown
+        initialPopulate();
+        // Human Verification Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const verificationScreen = document.getElementById('verification-screen');
+            const humanCheck = document.getElementById('human-check');
+            const mainContent = document.querySelector('.main-content');
+
+            humanCheck.addEventListener('change', () => {
+                if (humanCheck.checked) {
+                    verificationScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
